@@ -1,138 +1,102 @@
-import note
+###############################################################################
+# Case study of the chapter 2 of the book Python Object Oriented Programming. #
+# The case consists in a notebook application.                                #
+###############################################################################
 
+import notebook
 
-class Notebook():
-    def __init__(self, how_many = 1):
-        """
-        Initialices the list notes with as much empty notes as indicated
-        in the "how_many" parameter.
-        Parameters
-        ----------
-        how_many : int, must be bigger or equal than zero.
-            Indicates how many notes the list notes must contain.
+def options(): # Probably this function isn't gonna be used. Delete it.
+    """
+    Deploys a list of options in the console.
 
-        Returns
-        -------
-        None.
+    Returns
+    -------
+    None.
 
-        """
-        self.__notes = [] # Container for the notes in the notebook object
-        self.how_many = how_many
-        for i in range(1, how_many + 1):
-            self.__notes.append(note.Note(i))
-            
-    def print_all_notes(self):
-        """
-        Prints the information of all stored notes.
-
-        Returns
-        -------
-        None.
-
-        """
-        for i in range(0, self.how_many):
-            self.__notes[i].print_note()
+    """
+    print("")
     
-            
-    def modify_note_content(self, id, new_content = "", add = True):
-        """
-        Modifies the content of the note with the id passed as parameter.
+def read_option(min = 1, max = 9):
+    """
+    Ask the user to introduce an integer between min and max.
 
-        Parameters
-        ----------
-        id : int
-            Id of the note which modification is wanted.
-        new_content : str, optional
-            The new content to be added or for replacing the current note. 
-            The default is "".
-        add : bool, optional
-            If True function just appends the new content passed as parameter
-            to the exisisting one in the note.
+    Parameters
+    ----------
+    min : int, optional
+        Minimum number to be acepted as a valid option. The default is 1.
+    max : int, optional
+        Maximum number to be acepted as a valid option, optional. The default is 9.
 
-        Returns
-        -------
-        None.
+    Returns
+    -------
+    int value with a valid option between min and max. For every other case
+    it prints an error message, and ask for another input.
 
-        """
-        if not self.__checkId(id):
-            print("Error in id parameter. It must an integer from 1 to ", 
-                  self.how_many)
+    """
+    finish = False
+    option = input("Choose an option: ")
+    while not finish:
+        # option = input("Choose an option: ")
+        while type(option) != int:
+            try:
+                option = int(option)
+            except:
+                option = input("Your option should be an integer between " + 
+                               str(min) + " and " + str(max) + 
+                               ".\nPlease choose a valid option: ")
+        # finish = True
+        if option < min or option > max:
+            option = input("Your option should be between " + str(min) + 
+                           " and " + str(max) + 
+                           "\nPlease choose a valid option: ")
         else:
-            self.__notes[id - 1].add_note_content(new_content, add)
+            finish = True
+    return(option)
+
+
+def menu():
+    message = "List of options:\n----------------\n1.Print all notes in the \
+notebook.\n2.Print one note.\n"
+    print("---------------------\nNotebook application.\n---------------------")
+    end_program = False
+    # In the first run of the code the notebook should be created
+    print("How many notes you want in your notebook? (max is 100)")
+    notebook_size = read_option(1, 100)
+    new_notebook = notebook.Notebook(notebook_size)
+    print(message)
+    while(not end_program):
+        chosen_option = read_option()
+        print("Your option choosen is: ", chosen_option)
+        if chosen_option == 9:
+            end_program = True
+        elif chosen_option == 1:
+            new_notebook.print_all_notes()
+            print("\n", message)
+        elif chosen_option == 2:
+            new_notebook.print_all_notes()
+            print("\n", message)
             
-    def modify_note_tags(self, id, new_tags, add = True):
-        """
-        Modify the existing tags of the note indicated with the id parameter.
+    
 
-        Parameters
-        ----------
-        id : int
-            Id of the note which is wanted to be modified.
-        new_tags : str
-            New tags to be added or used to replace the current ones.
-        add : bool, optional
-            If True it add the tags passed in the paramter new_tags. 
-            The default is True.
+def main():
+    # testNotebook = notebook.Notebook(7)
+    # testNotebook.modify_note_content(1, "This is note one.")
+    # testNotebook.modify_note_content(2, "This is note two.")
+    # testNotebook.modify_note_content(3, "This is note three.")
+    # testNotebook.modify_note_content(4, "This is note four.")
+    # testNotebook.modify_note_content(5, "This is note five.")
+    # testNotebook.modify_note_content(6, "This is note six.")
+    # testNotebook.modify_note_content(7, "This is note seven.")
+    # testNotebook.print_all_notes()
+    # # Let's check the detetion of some note
+    # testNotebook.delete_note(3)
+    # testNotebook.print_all_notes()
+    menu()
+   
 
-        Returns
-        -------
-        None.
+if __name__ == "__main__":
+    main()
+    
+    
 
-        """
-        if not self.__checkId(id):
-            print("Error in id parameter. It must an integer from 1 to ", 
-                  self.how_many)
-        else:
-            self.__notes[id - 1].add_tags(new_tags, add)
-            
-        
-    def __checkId(self, id):
-        """
-        Checks if id is a positive integer between 1 and the value stored in
-        the variable how_many.
-
-        Parameters
-        ----------
-        id : int
-            Note's id.
-
-        Returns
-        -------
-        True if id is valid, False if not.
-
-        """
-        result = True
-        if type(id) != int or id < 1 or id > self.how_many:
-            result = False
-        return(result)
-            
-        
-    def delete_note(self, id):
-        """
-        Deletes the note corresponding to the id passed as parameter.
-
-        Parameters
-        ----------
-        id : int
-            Note's id.
-
-        Returns
-        -------
-        None.
-
-        """
-        if not self.__checkId(id):
-            print("Error in id parameter. It must an integer from 1 to ", 
-                  self.how_many)
-        else:
-            # Check this loop, in doesen't works
-            for i in range(id, self.how_many):
-                self.__notes[i - 1] = self.__notes[i]
-                
-            self.__notes.pop()
-            self.how_many -= 1
-
-
-    def add_note(self, new_note_content = "", new_note_tags = ""):
-        print("test")
 
