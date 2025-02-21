@@ -1,5 +1,6 @@
 import datetime
 
+
 class Note():
     def __init__(self, id, note_content = "", tags = ""):
         """
@@ -20,34 +21,34 @@ class Note():
         None.
 
         """
-        self.creation_date = datetime.date.today()
-        self.id = id
-        self.note_content = note_content
-        self.tags = tags
+        self.__creation_date = datetime.date.today()
+        self.__id = id
+        self.__note_content = note_content
+        self.__tags = tags
     
     def get_creation_date(self):
         """
         Returns the creation date of the note.
         """
-        return(self.creation_date)
+        return(self.__creation_date)
 
     def get_id(self):
         """
         Returns the id of the note.
         """
-        return(self.id)
+        return(self.__id)
     
     def get_note(self):
         """
         Returns the note's content.
         """
-        return(self.note_content)
+        return(self.__note_content)
     
     def get_tags(self):
         """
         Returns the tags associated with the note.
         """
-        return(self.tags)
+        return(self.__tags)
     
     def add_tags(self, new_tag, append = True):
         """
@@ -67,10 +68,10 @@ class Note():
         if (type(new_tag) != str):
             new_tag = str(new_tag)
         
-        if not append or len(self.tags) == 0:
-            self.tags = new_tag
+        if not append or len(self.__tags) == 0:
+            self.__tags = new_tag
         else:
-            self.tags += ("," + new_tag)
+            self.__tags += ("," + new_tag)
                 
         
     def reset_note(self):
@@ -81,7 +82,7 @@ class Note():
         -------
         None.
         """
-        self.note_content = ""
+        self.__note_content = ""
     
     def add_note_content(self, new_content = "", replace = False):
         """
@@ -102,9 +103,9 @@ class Note():
 
         """
         if replace:
-            self.note_content = new_content
+            self.__note_content = new_content
         else:
-            self.note_content += new_content
+            self.__note_content += new_content
         
         
     def print_note(self):
