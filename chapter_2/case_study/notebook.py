@@ -140,7 +140,7 @@ class Notebook():
         """
         if not self.__checkId(id):
             print("Error in id parameter. It must an integer from 1 to ", 
-                  self.how_many)
+                  self.__how_many)
         else:
             # Check this loop, in doesen't works
             for i in range(id, self.__how_many):
